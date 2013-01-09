@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+ <head>
+ <meta content="text/html; charset=gb2312" http-equiv="Content-Type"/>
+  <title>Form to create a new resource</title>
+ </head>
+<body>
+  <form action="/example-1.0-SNAPSHOT/api/user" method="POST">
+  <label for="email">email</label>
+  <input id='email' name="email" value="liushuai_email"/>
+  <br/>
+  <label for="username">username</label>
+  <input id='username' name="username" value="liushuai_username"/>
+  <br/>
+  
+  <label for="fbid">fbid</label>
+  <input id='fbid' name="fbid" value="200"/>
+  <br/>
+  
+  <label for="firstname">firstname</label>
+  <input id='firstname' name="firstname" value="liu"/>
+  <br/>
+  <input id='submitbutton' type="button" value="Submit" />
+  </form>
+  <div id="result"></div>
+  <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js'></script>
+  <script>
+  $(document).ready(function() {
+	  $('#submitbutton').click(function(){
+		  $.ajax({
+			  type:"post",
+			  url:"/api/ic",
+			  contentType:"application/json",
+			  data:'{"facebookId":"'+$('#fbid').val()+'","userName":"liushuai_username","firstName":"liushuai_password","email":"liushuai_email"}',
+			  dataType:'json',
+			  success:function onSucc(data){
+				  //var jsdata = eval(data);
+				  parent.window.location.href = "/api/ic/"+data.id;
+			  },
+			  error:function onErr(){alert("请求失败");}
+			  });
+		  return false;
+	  });
+  });
+  </script>
+</body>
+</html>

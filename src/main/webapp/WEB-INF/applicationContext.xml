@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+    <!-- Refer this page: http://stackoverflow.com/questions/9203122/spring-jpa-read-write-splitting-have-transactional-use-the-write-datasource for read write replicate-->
+    <bean id="dataSource"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource" 
+        p:driverClassName="com.mysql.jdbc.Driver"
+        p:url="jdbc:mysql://thu.c40bplvnfwfx.ap-southeast-1.rds.amazonaws.com/thudb" 
+        p:username="thudbuser" 
+        p:password="thurock2013" />
+        
+    <bean id="jpaAdapter"
+          class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+          p:showSql="true"
+          p:databasePlatform="org.hibernate.dialect.MySQLDialect" />
+    
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+          p:dataSource-ref="dataSource"
+          p:jpaVendorAdapter-ref="jpaAdapter">
+        <property name="jpaProperties">
+            <value>
+                hibernate.hbm2ddl.auto=update
+            </value>
+        </property>
+    </bean>
+    
+    <bean id="transactionManager"
+          class="org.springframework.orm.jpa.JpaTransactionManager"
+          p:entityManagerFactory-ref="entityManagerFactory" />
+    
+    <aop:aspectj-autoproxy/>
+    
+    <tx:annotation-driven/>
+    
+    <bean class="com.thu.api.management.MonitoringAspect" />
+    
+    <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor" />
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+    
+    <bean id="individualCustomerDao" class="com.thu.api.dao.jpa.IndividualCustomerDaoImpl" />
+    
+    <bean id="individualCustomerService" 
+        class="com.thu.api.domain.service.IndividualCustomerServiceImpl" 
+        p:dao-ref="individualCustomerDao" />
+    <context:component-scan base-package="com.thu.api.resource" />
+    
+</beans>
