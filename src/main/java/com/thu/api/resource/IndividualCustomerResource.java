@@ -5,6 +5,7 @@ import com.sun.jersey.api.spring.Autowire;
 import com.sun.jersey.spi.resource.Singleton;
 import com.thu.api.domain.IndividualCustomer;
 import com.thu.api.domain.service.IndividualCustomerService;
+import com.thu.api.utility.Authentication;
 
 import java.net.URI;
 
@@ -20,6 +21,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,6 +35,8 @@ import org.springframework.stereotype.Component;
 @Autowire
 public class IndividualCustomerResource {
 
+	protected final Logger logger = Logger.getLogger(getClass());
+	
     @Context
     private UriInfo uriInfo;
     private IndividualCustomerService individualCustomerService;
@@ -47,6 +52,7 @@ public class IndividualCustomerResource {
 //        return response;
 //    }
     
+    // create a new user by facebook id if not exists
     @POST @Consumes({MediaType.APPLICATION_JSON}) @Produces({"application/json" })
     public IndividualCustomer create(IndividualCustomer individualCustomer) {
     	IndividualCustomer ic = individualCustomerService.getIndividualCustomerByFacebookId(individualCustomer.getFacebookId());
@@ -60,7 +66,19 @@ public class IndividualCustomerResource {
     @GET @Produces({ "application/json" })
     @Path("/{id}")
     public IndividualCustomer get(@PathParam("id") Long id) {
-        return individualCustomerService.load(id);
+    	// uriInfo is used for retrieving the parameters in the url query
+    	String facebookId = uriInfo.getQueryParameters().getFirst("fb_id");
+    	String ticket = uriInfo.getQueryParameters().getFirst("ticket");
+    	// TODO the log4j configuration at log4j.properties like: log4j.logger.com.openmarket had issue
+//    	if (logger.isDebugEnabled()) {
+            logger.debug("facebookId: " + facebookId + " ticket: "+ticket);
+//        }
+    	Authentication auth = new Authentication();
+    	// TODO this need a common module to ensure we handle at all the apis
+    	if (facebookId!=null && ticket!=null && auth.isValidateTicket(ticket, new Long(facebookId))){
+    		return individualCustomerService.load(id);
+    	}
+    	return null;
     }
 
     @PUT

@@ -14,9 +14,9 @@
     <bean id="dataSource"
         class="org.springframework.jdbc.datasource.DriverManagerDataSource" 
         p:driverClassName="com.mysql.jdbc.Driver"
-        p:url="jdbc:mysql://thu.c40bplvnfwfx.ap-southeast-1.rds.amazonaws.com/thudb" 
-        p:username="thudbuser" 
-        p:password="thurock2013" />
+        p:url="jdbc:mysql://localhost/example" 
+        p:username="root" 
+        p:password="" />
         
     <bean id="jpaAdapter"
           class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
@@ -53,6 +53,13 @@
     <bean id="individualCustomerService" 
         class="com.thu.api.domain.service.IndividualCustomerServiceImpl" 
         p:dao-ref="individualCustomerDao" />
+        
+    <bean id="individualServiceProviderDao" class="com.thu.api.dao.jpa.IndividualServiceProviderDaoImpl" />
+    
+    <bean id="individualServiceProviderService" 
+        class="com.thu.api.domain.service.InvididualServiceProviderServiceImpl"
+        p:dao-ref="individualServiceProviderDao" />
+            
     <context:component-scan base-package="com.thu.api.resource" />
     
 </beans>

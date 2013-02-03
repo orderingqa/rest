@@ -1,0 +1,27 @@
+        {
+            "msgCode":0,
+            "msg":"",
+            "version":0.2,
+            "icId":10,
+            "ispId":1900,
+            "firstName":"Fred",
+            "lastName":"Westgate",
+            "office":"206-426-426",
+            "mobile":"206-425-425",
+            "email":"fredwestgate@gmail.com",
+            "website":"www.fredwestgatedentistry.com",
+            "avatar":"http://s3-ap-southeast-1.amazonaws.com/elasticbeanstalk-ap-southeast-1-027926357044/1.jpg",
+            "profession":"dentist",
+            "address":{
+                "country":"usa",
+                "state":"wa",
+                "city":"Redmond",
+                "line1":"16250 NE 85th St",
+                "zip":"98052-3528"
+            },
+            "rating":4.5,
+            "clients":20,
+            "friendClients":2,
+            "recommends":5,
+            "friendRecommends":2
+        }

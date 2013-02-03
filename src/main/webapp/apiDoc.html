@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+ <head>
+ <meta content="text/html; charset=gb2312" http-equiv="Content-Type"/>
+ <link href="prettify.css" type="text/css" rel="stylesheet">
+  <title>API doc</title>
+ </head>
+<body onload="prettyPrint()">
+  <script>var prefix = window.location.href.substr(0, window.location.href.lastIndexOf('/'))</script>
+  <h2>Interface--download isp update from remote server</h2>
+  <h3>URL see below, only support POST</h3>
+  <input maxLength="256" size="100" value="/api/test/downloadISPUpdate?token=xxx" class="prefix" id="downloadISPUpdateURL"></input>
+  
+  <h3>input</h3>
+  <div id=inputParameter></div>
+  
+  <h3><a href="javascript:return false" id='downloadISPUpdate'>click to post for output</a></h3>
+  <div id="downloadISPUpdateOutput"></div>
+  
+  <a href='http://chris.photobooks.com/json/default.htm' target="blank">bad format? try this url</a>
+  
+  <!-- <iframe src="http://chris.photobooks.com/json/default.htm" width="800" height="600"></iframe> -->
+  <script src='jquery-1.6.2.min.js'></script>
+  <script src='jquery.json-2.4.js'></script>
+  <script src='prettify.js'></script>
+  
+  
+  <script>
+  // todo, we need to use the relative links to handle aws and local tomcat
+  var downloadISPUpdateInput = {
+	    "icId":10,
+	    "ispList":[
+	        {
+	            "ispId":198,
+	            "basic":"CHECKSUM32BITSXX",
+	            "reputation":"CHECKSUM32BITSXX"
+	        },
+	        {
+	            "ispId":10093,
+	            "basic":"CHECKSUM32BITSXX",
+	            "reputation":"CHECKSUM32BITSXX"
+	        }
+	    ]
+	};
+  
+  
+  jQuery(document).ready(function() {
+	  jQuery('.prefix').val(prefix+$('.prefix').val());
+	  jQuery('<code>').addClass("prettyprint").html(jQuery.toJSON(downloadISPUpdateInput)).appendTo("#inputParameter");
+	  jQuery('#downloadISPUpdate').click(function(){
+		  jQuery.ajax({
+			  type:"post",
+			  url: jQuery('#downloadISPUpdateURL').val(),
+			  contentType:"application/json",
+			  data:jQuery.toJSON(downloadISPUpdateInput),
+			  dataType:'json',
+			  success:function onSucc(data){
+                  jQuery('#downloadISPUpdateOutput').html('');
+				  $('<code>').addClass("prettyprint").html(jQuery.toJSON(data)).appendTo("#downloadISPUpdateOutput");
+			  },
+			  error:function onErr(){alert("请求失败");}
+			  });
+		  return false;
+    });
+  });
+  </script>
+</body>
+</html>

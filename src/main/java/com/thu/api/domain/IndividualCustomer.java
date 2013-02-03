@@ -53,16 +53,14 @@ public class IndividualCustomer implements DomainObject<Long> {
     private String email;
     
     @Column(name = "gender")
-    private String gender;
-    
-    @Column(name = "avatar_url")
-    private String avatarUrl;
+    private Integer gender; // should we use int?
 
     @Column(name = "phone")
     private String phone;
-    
-    @Column(name = "current_location_id")
-    private String currentLocationId;
+        
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
     
 
     
@@ -114,11 +112,11 @@ public class IndividualCustomer implements DomainObject<Long> {
 		this.email = email;
 	}
 
-	public String getGender() {
+	public Integer getGender() {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Integer gender) {
 		this.gender = gender;
 	}
 
@@ -138,13 +136,6 @@ public class IndividualCustomer implements DomainObject<Long> {
 		this.phone = phone;
 	}
 
-	public String getCurrentLocationId() {
-		return currentLocationId;
-	}
-
-	public void setCurrentLocationId(String currentLocationId) {
-		this.currentLocationId = currentLocationId;
-	}
 
 	@Override
     public boolean equals(Object obj) {
